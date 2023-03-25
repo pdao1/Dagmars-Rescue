@@ -1,0 +1,148 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phung's WebApp</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Include stylesheet -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src='https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js'></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+ 
+  <div id="fb-root"></div>
+ 
+     <!-- NAVBAR -->
+  <nav class="z-depth-50 grey lighten-4" style="height: 100px;">
+    <div class="nav-wrapper container">
+      <a href="#" class="brand-logo">
+        <img src="/assets/tortie.png" style="width: 70px; height: 70px; border-radius: 50%; margin-top: 10px;">
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down" style="margin-top:15px;">
+          <li class="logged-in">
+            <a href="#" class="modal-trigger waves-light waves-ripple btn" data-target="modal-account">Account</a>
+          </li>
+          <li class="logged-in">
+            <a href="#" class="modal-trigger waves-light waves-orange btn" id="logout">Logout</a>
+          </li>
+          <li class="logged-in">
+            <a href="#" class="modal-trigger waves-light waves-ripple btn" data-target="modal-create">Add Code</a>
+          </li>
+          <li class="logged-out">
+            <a href="#" class="modal-trigger waves-light waves-ripple btn" data-target="modal-login">Login</a>
+          </li>
+          <li class="logged-out">
+            <a href="#" class="modal-trigger waves-light waves-ripple btn" data-target="modal-signup">Sign up</a>
+          </li>
+        </span>
+      </ul>
+    </div>
+  </nav>
+
+  
+
+       
+  <!-- SIGN UP MODAL -->
+<main>       
+  <div id="modal-signup" class="modal">
+    <div class="modal-content">
+      <h4>Sign up</h4><br />
+      <form id="signup-form">
+        <div class="input-field">
+          <input type="email" id="signup-email" required />
+          <label for="signup-email">Email address</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="signup-password" required />
+          <label for="signup-password">Choose password</label>
+        </div>
+        <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <h2 class="mt-6 text-center text-lg font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+
+      <form id="login-form">
+        <div class="input-field">
+          <input type="email" id="login-email" required />
+          <label for="login-email">Email address</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="login-password" required />
+          <label for="login-password">Your password</label>
+        </div>
+        <button class="btn yellow darken-2 z-depth-0">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ACCOUNT MODAL -->
+  <div id="modal-account" class="modal">
+    <div class="modal-content center-align">
+      <h4>Account details</h4><br />
+      <div class="account-details"></div>
+    </div>
+  </div>
+
+  <!-- CREATE GUIDE MODAL -->
+  <div id="modal-create" class="modal">
+    <div class="modal-content">
+      <h4>Create Guide</h4><br />
+      <form id="create-form">
+        <div class="input-field">
+          <input type="text" id="title" required>
+          <label for="title">Title</label>
+          <div class="editor">
+            <input type="text" id="content" required>
+            <label for="content"></label>
+          </div>
+        </div>
+        <br>
+        <button class="btn green darken-2 z-depth-0">Create</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOSTER LIST -->
+  <h1 class="text-center">My Fosters</h1>
+  <div class="container" style="margin-top: 40px;">
+    <ul class="collapsible z-depth-0 snippets" style="border: none;"></ul>
+  </div>
+  
+
+          <!-- <div class="container" style="position: absolute; bottom: 25%; left: 25%; width: 50%">
+            <div class="row my-4">
+            <input type="text" placeholder="name" class="text-center mx-3 border-1 rounded-md drop-shadow-md" id="name">
+            <input type="text" placeholder="username" class="text-center mx-3 border-1 rounded-md drop-shadow-md" id="username">
+            <input type="text" placeholder="email" class="text-center mx-3 border-1 rounded-md drop-shadow-md" id="email">
+          </div>
+          <div class="buttons text-center">
+            <button id="submit" class="waves-effect waves-light btn">send</button>
+            <button id="get" class="waves-effect waves-light btn">get</button>
+            <button id="update" class="waves-effect waves-light blue light btn">update</button>
+            <button id="delete" class="waves-effect waves-light red light btn">delete</button>
+          </div> -->
+      
+          
+          </main>
+          
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="/js/global.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="/js/auth.js"></script>
+  </body>
+</html>
